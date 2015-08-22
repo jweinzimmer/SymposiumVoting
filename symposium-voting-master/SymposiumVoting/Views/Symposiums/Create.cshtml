@@ -1,0 +1,150 @@
+﻿@model SymposiumVoting.Models.Symposium
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form_create" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Symposium</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <p> Select year and semester</p>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.year, "Year", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.year)
+                @Html.ValidationMessageFor(model => model.year)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.semester, "Semester", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownListFor(model => model.semester, new SelectList(
+                  new List<Object>{
+                       new { value = "Spring" , text = "Spring"  },
+                       new { value = "Fall" , text = "Fall" }
+                  },
+                  "value",
+                  "text",
+                   2))
+
+                @*@Html.EditorFor(model => model.semester)*@
+                @*@Html.ValidationMessageFor(model => model.year)*@
+            </div>
+        </div>
+
+
+        <div class="form-group" id="style">
+            @Html.LabelFor(model => model.vote_style, "Vote Style", new { @class = "control-label col-md-2" })
+            <div class="error_message col-md-10" >
+                <form action="">
+                    <input type="radio" name="vote_style" value="standard" checked>Standard<br>
+                    <input type="radio" name="vote_style" value="range">Range<br>
+                    <input type="radio" name="vote_style" value="amount" class="append_message">Amount
+
+                </form>
+                <p class='inform' style='margin-bottom:0px; padding-bottom:0px; margin-top:5px;'>Voters can cast their vote one time for a project with a limited amount of votes.</p>
+            </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <div class="append_target"></div>
+                     @Html.LabelFor(model => model.limit, "Vote Limit", new { @class = "control-label col-md-2 limit" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.limit)
+                        @Html.ValidationMessageFor(model => model.limit)
+                    </div>
+                </div>
+
+        <div class="form-group hidden" id="min">
+            @Html.LabelFor(model => model.min, "Minumum Vote Limit", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input Value="0" type="text" name="min" value=""  id="min_value"/>
+                <div id="min_message"></div>
+            </div>
+        </div>
+        <div class="form-group hidden" id="max">
+            @Html.LabelFor(model => model.max, "Maximum Vote Limit", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input Value="0" type="text" name="max" value="" id="max_value" />
+                <div id="max_message"></div>
+            </div>
+        </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Dashboard", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+}
+<script>
+    $('#limit').keyup(function () {
+        $('#max_value').val($('#limit').val());
+        $('#min_value').val(1);
+
+
+    })
+    $('#style').change(function () {
+        $('.inform').remove();
+        if ($("#style :radio:checked").val() == 'standard') {
+            $('.append_target').empty();
+            $("<p class='control-label col-md-2' style='font-weight:bold;'> Vote Limit</p>").appendTo($('.append_target'));
+            $("<p class='inform' style='margin-bottom:0px; padding-bottom:0px; margin-top:5px;'>Voters can cast their vote one time for a project with a limited amount of votes.</p>").appendTo('.error_message');
+            $('#min').addClass('hidden');
+            $('#max').addClass('hidden');
+        }
+        else if ($("#style :radio:checked").val() == 'range') {
+            $('.limit').remove();
+            $('.append_target').empty();
+            $("<p class='control-label col-md-2' style='font-weight:bold;'> Vote Limit</p>").appendTo($('.append_target'));
+            $("<p class='inform' style='margin-bottom:0px; padding-bottom:0px; margin-top:5px; font-style:bold;'>Voters can cast their vote one time for a project with a range 1-10 with a limited amount of votes.</p>").appendTo('.error_message');
+            $('#min').addClass('hidden');
+            $('#max').addClass('hidden');
+        }
+        else {
+            $('#min_value').val('');
+            $('#max_value').val($('#limit').val());
+            $('.limit').remove();
+            $('.append_target').empty();
+            $("<p class='control-label col-md-2' style='font-weight:bold;'> Vote Dollars</p>").appendTo($('.append_target'));
+            $("<p class='inform' style='margin-bottom:0px; padding-bottom:0px; margin-top:5px;'>Voters are given a dollar amount limit which they choose to spend on one or multiple projects.</p>").appendTo('.error_message');
+            $('#min').removeClass('hidden');
+            $('#max').removeClass('hidden');
+        }
+    })
+    $("#form_create").submit(function (e) {
+        
+        e.preventDefault();
+        if ($('#min_value').val() == '') {
+            $("<p style='display:inline;'>please enter a minimum value.</p>").appendTo('#min_message');
+        }
+        if ($('#max_value').val() == '') {
+            $("<p style='display:inline;'>please enter a maximum value.</p>").appendTo('#max_message');
+        }
+        if ($('#max_value').val() != '' && $('#max_value').val() != '') {
+            $("#form_create").submit();
+
+        }
+    });
+</script>

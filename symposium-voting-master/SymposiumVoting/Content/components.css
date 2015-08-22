@@ -1,0 +1,21 @@
+@media (max-width: 768px) {
+  .hide-for-mobile {
+    display: none; } }
+
+@media (min-width: 769px) {
+  .hide-for-med-up {
+    display: none; } }
+
+.btn {
+  background-color: gray;
+  color: white; }
+  .btn:hover {
+    background-color: #001f51;
+    color: white; }
+
+dl.inline dt {
+  float: left;
+  margin-right: 30px;
+  text-align: right;
+  width: 100px; }
+

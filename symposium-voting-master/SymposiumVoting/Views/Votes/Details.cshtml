@@ -1,0 +1,42 @@
+﻿@model SymposiumVoting.Models.Vote
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Vote</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Project Voted For
+        </dt>
+
+        <dd>
+            @Model.Project.Name
+        </dd>
+        <dt>
+            Voter ID
+        </dt>
+
+        <dd>
+            @Model.Voter.ID
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.amount)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

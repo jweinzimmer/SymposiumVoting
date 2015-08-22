@@ -1,0 +1,8 @@
+@media (max-width: 768px) {
+  .hide-for-mobile {
+    display: none; } }
+
+@media (min-width: 769px) {
+  .hide-for-med-up {
+    display: none; } }
+

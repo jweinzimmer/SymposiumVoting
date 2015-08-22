@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @*<link rel="stylesheet" href='@Url.Content("~/Content/variables_and_mixins.scss")'>*@
+    <link rel="stylesheet" href='@Url.Content("~/Content/bootstrap.css")'>
+    @*<link rel="stylesheet" href='@Url.Content("~/Content/bootstrap.min.css")'>*@
+    @*<link rel="stylesheet" href='@Url.Content("~/Content/variables.scss")'>*@
+    <link rel="stylesheet" href='@Url.Content("~/Content/components.css")'>
+    @*<link rel="stylesheet" href='@Url.Content("~/Content/components.scss")'>*@
+    @*<link rel="stylesheet" href='@Url.Content("~/Content/layout.scss")'>*@
+    <link rel="stylesheet" href='@Url.Content("~/Content/layout.css")'>
+    <link rel="stylesheet" href='@Url.Content("~/Content/voting.css")'>
+
+    @Styles.Render("~/Content/css")
+    @*@Styles.Render(@"\StarVote\Content\css")*@
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <section class='mywings row'>
+        <div class="container">
+            <div class="col-xs-4">
+                <img src="http://crux2.unfcsd.unf.edu/StarVote/Content/UNFLogo.gif" />
+            </div>
+            <div class="col-xs-8">
+                <h1> SoC Symposium</h1>
+            </div>
+        </div>
+    </section>
+
+    @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated == true)
+    {
+        <section class="top-nav row">
+            <div class="container">
+
+                <div class="dropdown hide-for-med-up">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                        Menu
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        @* <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin-unf-login">Home</a></li>*@
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/Symposiums">Symposiums</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/Projects/Index">Projects</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/Reports">Reports</a></li>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+                </div>
+                <div class=" nav-links hide-for-mobile">
+                    <ul>
+                        @*<li>@Html.ActionLink("Home", "Login", "Account", new { }, new { @class = "col-lg-2" })</li>*@
+                        <li>@Html.ActionLink("Symposiums", "Index", "Symposiums", new { }, new { @class = "col-lg-2" })</li>
+                        <li>@Html.ActionLink("Projects", "Index", "Projects", new { }, new { @class = "col-lg-2" })</li>
+                        <li>@Html.ActionLink("Reports", "report_index", "Symposiums", new { }, new { @class = "col-lg-2" })</li>
+                        @Html.Partial("_LoginPartial")
+                    </ul>
+                </div>
+            </div>
+        </section>
+    }
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+    </div>
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <footer>
+        <p>Star Platinum Software</p>
+    </footer>
+</body>
+</html>

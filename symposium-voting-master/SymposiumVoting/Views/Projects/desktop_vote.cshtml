@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "desktop_vote";
+}
+<div class="vote-header">
+    <h2>Vote For Projects</h2>
+</div>
+@if (ViewBag.Symposiums != null)
+{ 
+
+    if (ViewBag.Projects.Count != 0)
+    { 
+    
+        <table class="table table-striped">
+   @foreach (var item in ViewBag.Projects)
+    {
+        <tr class="project-display row">
+          
+            <td class="project-name col-md-4">
+                <h3>
+                    @item.Name
+                </h3>
+            </td>
+
+            <td class="project-number col-md-4">
+                <h3>
+                    @item.CourseNumber
+                </h3>
+            </td>
+
+            <td class="project-vote-link col-md-4" >
+                @Html.ActionLink("Vote For Project", "project_vote", new { id = item.ID }, new { @class ="btn"})
+            </td>
+
+        </tr>
+
+    }
+    </table> 
+   }
+   else
+{
+    
+    <h2>There are no projects registered at this time.</h2>
+}
+}
+else
+{
+    <h2>No Symposiums are deployed at the moment.</h2>
+}
+

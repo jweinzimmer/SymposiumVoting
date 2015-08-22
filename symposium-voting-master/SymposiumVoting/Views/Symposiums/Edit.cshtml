@@ -1,0 +1,96 @@
+﻿@model SymposiumVoting.Models.Symposium
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Symposium @Model.semester @Model.year</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.year, "Year", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.year)
+                @Html.ValidationMessageFor(model => model.year)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.semester, "Semester", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.semester)
+                @Html.ValidationMessageFor(model => model.semester)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.vote_style, "Vote Style", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+             <select id="style_option">
+                 @foreach (var vote_style in ViewBag.Vote_Styles)
+                    {
+
+                        <option>@vote_style</option>
+
+                    }
+             </select>
+                <input type="text" name="vote_style" class="hidden" id="style">
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.limit, "Limit", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.limit)
+                @Html.ValidationMessageFor(model => model.limit)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.min, "Minimum Votes", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.min)
+                @Html.ValidationMessageFor(model => model.min)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.max, "Maximum Votes", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.max)
+                @Html.ValidationMessageFor(model => model.max)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Symposium", "Details", new { id = Model.ID }, new { })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    $('#style').val($('#style_option').val());
+    $('#style_option').change(function () {
+        $('#style').val($('#style_option').val());
+
+    })
+</script>

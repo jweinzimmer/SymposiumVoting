@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<link rel="stylesheet" href="~/Content/multilist.css">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>scoped_projects</title>
+</head>
+<body>
+    
+    <div>
+   
+        <table class="table">
+            @if ( ViewBag.Projects.Count != 0)
+            {
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Course Number
+                    </th>
+                    <th></th>
+                </tr>
+                foreach (var item in ViewBag.Projects)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.CourseNumber.Insert(3, " ")
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        </td>
+                    </tr>
+                
+                }
+            }
+
+
+            else
+            {
+                <p>There Are No Projects Registered under this Symposium.</p>
+            }
+        </table>
+    </div>
+    @{
+        Layout = null;
+    }
+    
+</body>
+</html>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="~/Content/jquery.tmpl.min.js"></script>
+<script src="~/Content/multilist.js"></script>

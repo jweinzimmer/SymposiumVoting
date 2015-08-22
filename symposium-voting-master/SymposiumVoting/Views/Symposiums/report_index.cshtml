@@ -1,0 +1,37 @@
+﻿@using System.Linq
+@model IEnumerable<SymposiumVoting.Models.Symposium>
+
+@{
+    ViewBag.Title = "report_index";
+}
+
+
+
+@if (!Model.Any())
+{
+    <h1>No Symposiums exist.</h1>
+}
+else
+{
+    <div class="sub-nav-bar">
+        <h2 class="col-sm-8" id="h2_nav">
+
+            View Report For a Specific Symposium.
+        </h2>
+
+    </div>
+    <table class="table">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.semester + " - " + item.year, "reports", new { id = item.ID })
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+}
+

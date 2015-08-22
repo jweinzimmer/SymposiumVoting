@@ -1,0 +1,340 @@
+﻿@model SymposiumVoting.Models.Symposium
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="loader"></div>
+<div class="wrapper">
+    <div class="page-header">
+        <h1>@Model.semester - @Model.year Symposium</h1>
+        <div>
+            @if (ViewBag.Live_symposium == null) 
+            { 
+                if (Model.live == false)
+                {
+                    @Html.ActionLink("Deploy Symposium", "Deploy", new { id = Model.ID }, new { @class = "btn", @style = "background:green;" })
+                }
+
+            }
+            else
+            {
+                if (Model.live == false)
+                {
+                    @Html.ActionLink("Deploy Symposium", "Deploy", new { id = Model.ID }, new { @class = "btn", @style = "background:green;", onclick = "return confirm('There is already a symposium live at the moment, would you like to conceal the older symosium and deploy this one?');" })
+                }
+                else
+                {
+                    @Html.ActionLink("Conceal Symposium", "Deploy", new { id = Model.ID }, new { @class = "btn", @style = "background:red;" })
+                }
+            }
+            @Html.ActionLink("Settings", "Edit", new { id = Model.ID }, new { @class = "btn" })
+            @Html.ActionLink("Export Voting IDS ", "export_voter_ids", new { id = Model.ID}, new { @class = "btn", id = "export" })
+            @Html.ActionLink("Winner By Course", "projects_scoped_with_courses", "Projects", new { id = Model.ID }, new { @class = "btn" })
+            @*@Html.ActionLink("Register Project", "Create", "Projects", new { id = Model.ID }, new { @class = "btn" })*@
+            <button type="button" class="btn" data-toggle="modal" data-target="#myModal">
+                Generate Voters
+            </button>
+
+            <div class="delete_input">
+                @using (Html.BeginForm("voters_delete", "Voters"))
+                {
+                    <input type="text" name="symposium_id" value="@Model.ID" class="hidden" />
+                    <button type="submit" class="btn" onclick="return confirm('Are you sure you wish to delete all of the voters.');">Delete Voters</button>
+                }
+
+            </div>
+            @if (ViewBag.Voter_Count == 0)
+            {
+                <div class="delete_input" style="margin-right:20px;">
+                    @using (Html.BeginForm("delete_projects", "Symposiums"))
+                    {
+                        <input type="text" name="symposium_id" value="@Model.ID" class="hidden" />
+                        <button type="submit" class="btn" onclick="return confirm('Are you sure you wish to delete all of the projects.');">Delete Projects</button>
+                    }
+
+                </div>
+            }
+            @*@Html.ActionLink("Delete Voters", "voters_delete", "Voters",
+            new { id = @Model.ID },
+            new { onclick = "return confirm('Are you sure you wish to delete this article?');", @class = "btn" })*@
+
+
+            <button type="submit" class="btn" data-toggle="modal" data-target="#myModal2">Upload Projects</button>
+            <div class="delete_input">
+                @using (Html.BeginForm("upload_projects", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="col-md-8">
+                        <input type="file" name="projects" id="projects" class="hidden" />
+                    </div>
+                    <input type="text" name="symposium_id" value="@Model.ID" class="hidden" />
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+<section class="row">
+    <div class="col-lg-6 col-md-6">
+        <h2>Current Settings</h2>
+        <dl class="dl-horizontal">
+            <dt>
+                Vote Style:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.vote_style)
+            </dd>
+
+            <dt>
+                Vote Limit:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.limit)
+            </dd>
+            <dt>
+                Live
+            </dt>
+
+            <dd>
+                @Model.live
+            </dd>
+            @if(ViewBag.Symposium.vote_style == "amount")
+            { 
+            <dt>
+                Minimum Vote limit:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.min)
+            </dd>
+            <dt>
+                Maximum Vote Limit:
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.max)
+            </dd>
+            }
+
+        </dl>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <p>
+            @Html.ActionLink("Back to Dashboard", "Index")
+        </p>
+    </div>
+</section>
+
+<section class="row">
+
+
+    <div class="col-lg-6 col-md-6">
+        <h2>Registered Voters</h2>
+
+        <table class="table">
+
+            @if (Model.Voters.Count != 0)
+            {
+                foreach (var item in Model.Voters)
+                {
+
+                    <tr>
+                        <td>
+                            @Html.ActionLink("voter " + item.voting_id, "Details", "Voters", new { id = item.ID })
+                        </td>
+
+
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Voters", new { id = item.ID }, new { }) |
+                            @Html.ActionLink("Delete", "Delete", "Voters", new { id = item.ID }, new { })
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <p>There Are No Voters Registered At The Moment.</p>
+            }
+        </table>
+    </div>
+    <div class="col-lg-6 col-md-6">
+        <h2>Registered Projects</h2>
+        <table class="table">
+            @if (Model.Projects.Count != 0)
+            {
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    @if (Model.vote_style == "amount")
+                    {
+                        <th>
+                            Vote Dollars
+                        </th>
+                        <th>
+                            Options
+                        </th>
+
+                    }
+                    else if (Model.vote_style == "range")
+                    {
+                        <th>
+                            Vote Amount
+                        </th>
+                        <th>
+                            Options
+                        </th>
+
+                    }
+                    else
+                    {
+                        <th>
+                            Votes
+                        </th>
+                        <th>
+                            Options
+                        </th>
+                    }
+                </tr>
+
+
+                foreach (var item in ViewBag.Projects)
+                {
+
+                    <tr>
+                        <td>
+                            @Html.ActionLink((string)item.Name, "Details", "Projects", new { id = item.ID }, new { })
+                        </td>
+                        @if (Model.vote_style == "amount")
+                        {
+                            int project_vote_amount = 0;
+                            foreach (var vote in item.Votes)
+                            {
+                                project_vote_amount = project_vote_amount + vote.amount;
+                            }
+                            <td>
+                                @project_vote_amount
+                            </td>
+                        }
+                        else if (Model.vote_style == "range")
+                        {
+                            int vote_count = 0;
+                            foreach (var vote in item.Votes)
+                            {
+                                vote_count = vote_count + vote.amount;
+                            }
+
+                            <td>
+                                @vote_count
+                            </td>
+
+                        }
+                        else
+                        {
+
+                            int vote_count = 0;
+                            vote_count = vote_count + item.Votes.Count;
+                            <td>
+                                @vote_count
+                            </td>
+                        }
+
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Projects", new { id = item.ID }, new { }) |
+                            @Html.ActionLink("Delete", "Delete", "Projects", new { id = item.ID }, new { })
+                        </td>
+                    </tr>
+                }
+
+            }
+            else
+            {
+                <p>There Are No Projects Registered At The Moment.</p>
+            }
+        </table>
+
+    </div>
+</section>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm("generate_voters", "Voters"))
+            {
+                <div class="modal-header">
+                    @*<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>*@
+                    <h4 class="modal-title" id="myModalLabel">Generate Voters for @Model.semester - @Model.year.</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group control-label">
+                        Number of Voters:
+                        <div class="modal_input">
+
+                            <input type="text" name="voter_amount" />
+                            <input type="text" name="symposium_id" value="@Model.ID" class="hidden" />
+                            @*<button type="submit" class="btn btn-default btn-primary" data-dismiss="modal">Create Voters</button>*@
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+                    <button value=" Send" class="btn btn-success" type="submit" id="submit">Create Voters</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @using (Html.BeginForm("upload_projects", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    @*<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>*@
+                    <h4 class="modal-title" id="myModalLabel">Upload Projects for @Model.semester - @Model.year.</h4>
+                </div>
+                <div class="modal-body">
+                    <h5>Please make sure that each line in the file has the format of the following example.</h5>
+                    <p>Please make sure there are no spaces within the course number, spaces will be handled after for display.</p>
+                    <p>No empty lines should exist at the bottom of the file.</p>
+                    <p>Multiple students are comma separated.</p>
+                    <p style="font-weight:bold;">Project Name;CourseNumber;Course Name;Students</p>
+                    <p> Dummy Project 34;CEN6017;Engineering of Software II;Student 1, student 2, and student 3</p>
+                    <div class="form-group control-label">
+
+                        <div>
+                            <input type="file" name="projects" id="projects" class="" />
+                        </div>
+                        <input type="text" name="symposium_id" value="@Model.ID" class="hidden" />
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+                    <button class="btn btn-success" type="submit">Create Projects</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(window).load(function () {
+        $(".loader").fadeOut("slow");
+    })
+    $('#upload_projects').click(function (e) {
+        e.preventDefault();
+        $('#projects').toggleClass();
+
+    }
+    )
+</script>

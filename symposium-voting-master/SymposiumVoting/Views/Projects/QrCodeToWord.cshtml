@@ -1,0 +1,39 @@
+﻿
+@{
+    Layout = null;
+    int count = 1;
+}
+
+
+<!DOCTYPE html>
+<body>
+@if (ViewBag.Projects.Count != 0) {
+foreach (var item in ViewBag.Projects)
+{
+    
+
+<div class="qr_code">
+    <h1 style="text-align:center; font-size:100px">@count</h1>
+    <h2 style="text-align:center;">Project</h2>
+    <h2 style="text-align:center;">@item.Name</h2>
+    <br />
+    <h2 style="text-align:center;">Members</h2>
+    <h2 style="text-align:center;">@item.students</h2>
+    <br />
+    <h2 style="text-align:center;">Course</h2>
+    <h2 style="text-align:center;">@item.Course.courseNumber.Insert(3, " ") - @item.Course.courseName</h2>
+    <div style ="text-align:center;">
+        <img src="http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=http://crux2.unfcsd.unf.edu/StarVote/Vote/@(item.ID)&chld=H|0" />
+    </div>
+</div>
+    <br clear=all style='mso-special-character:line-break;page-break-before:always'>
+    count++;
+}
+}
+else
+{
+    <h2 style="text-align:center;">There are no registered projects under this symposium.</h2>
+}
+</body>
+</html>
+

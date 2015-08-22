@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "voter_ids";
+}
+<!DOCTYPE html>
+<div style="text-align:center;">
+    
+    @foreach (var item in ViewBag.Voter_IDS)
+    {
+
+        <h2>You may cast a minumum of @ViewBag.Symposium.min dollars</h2>
+        <h2>You may cast a maximum of @ViewBag.Symposium.max dollars</h2>
+    <h2>You have a total of @ViewBag.Symposium.limit dollars to cast.</h2>
+    <h2>Voting ID</h2>
+        <h2 style="font-weight:bold;">@item</h2>
+        <br clear=all style='mso-special-character:line-break;page-break-before:always'>
+    }
+</div>
+</html>

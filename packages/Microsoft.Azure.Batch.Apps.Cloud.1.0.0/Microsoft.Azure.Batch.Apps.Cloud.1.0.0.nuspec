@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Azure.Batch.Apps.Cloud</id>
+    <version>1.0.0</version>
+    <title>Microsoft Azure Batch Apps Cloud SDK</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=517878</licenseUrl>
+    <projectUrl>http://go.microsoft.com/fwlink/?LinkId=512182</projectUrl>
+    <iconUrl>http://go.microsoft.com/fwlink/?LinkID=288890</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The Microsoft Azure Batch Apps APIs provide a higher level of abstraction and job execution pipeline hosted on Azure Batch services. With Batch Apps you can create a batch workload as a service in the cloud from an application that runs on client workstations or a compute cluster.
+
+Batch Apps helps you wrap existing applications and publishes them to run on VMs which are created and managed by the Batch service in the background. The Batch Apps framework handles the movement of input and output files, job execution, job management, and data persistence.
+
+Batch Apps also allows you to model tasks for how workload is partitioned across multiple steps in a job. Included is a REST-based API and the Batch Apps portal which helps you manage the jobs you submitted and can be accessed from the Azure Management Portal.
+
+This SDK contains the Job splitter and Task processor components that allow you to cloud-enable an application. The  Job splitter breaks a job down into tasks that can be processed independently. For example, in an animation scenario, the Job splitter would take a movie rendering job and divide it into individual frames.
+
+The Task processor is responsible for creating the execution environment for the application workload by resolving any given prerequsites. For example, in an animation scenario, the Task processor could copy a 3D model prior to invoking a rendering program to render the single frame.</description>
+    <summary>A client library to allow you to cloud-enable applications working with Microsoft Azure Batch App services.</summary>
+  </metadata>
+</package>

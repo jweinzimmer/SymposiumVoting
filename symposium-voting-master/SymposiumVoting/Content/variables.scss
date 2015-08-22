@@ -1,0 +1,15 @@
+$medium-up: "(min-width: 769px)";
+$unf-blue: #001f51;
+$global-padding: 15px;
+
+.hide-for-mobile{
+	@media(max-width: 768px){
+		display: none;
+	}
+}
+
+.hide-for-med-up{
+	@media(min-width: 769px){
+		display: none;
+	}
+}

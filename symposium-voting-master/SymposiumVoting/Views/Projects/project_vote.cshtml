@@ -1,0 +1,131 @@
+﻿@model SymposiumVoting.Models.Project
+<meta charset="utf-8">
+<title>jQuery UI Slider - Range with fixed maximum</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+@{
+    ViewBag.Title = "project_vote";
+}
+
+<h2>Cast Your Vote for @Model.Name</h2>
+@using (Ajax.BeginForm("Vote", "Votes", FormMethod.Post, null)) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ID)
+
+        @if(ViewBag.Session_present == false)
+        {
+            <div class="form-group">
+                <div class="control-label col-md-2">
+                    Enter Your Voting ID:
+                </div>
+
+                <div class="col-md-10">
+                    <input type="text" name="voting_id">
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.Symposium.vote_style == "range")
+{
+    <div class="form-group">
+        @*<div class="control-label col-md-2">
+                Enter a number 1-10:
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="amount">
+            </div>*@
+
+        <p>
+            <label for="amount">Score this project 1-10: </label>
+            <input type="text" id="amount" name="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+    </div>
+        <div id="slider-range-max">
+       </div>
+
+
+
+}
+        @if (ViewBag.Symposium.vote_style == "amount")
+        {
+            if (@ViewBag.Toggle_remaining_button == false)
+            {
+
+                <div class="form-group">
+
+                    <div class="control-label col-md-2">
+                        Enter a portion of your vote currency:
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="amount">
+                    </div>
+                </div>
+                     <div class="message">
+            @ViewBag.Message
+
+        </div>
+                        <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Cast Vote" class="btn btn-default" style="display:block;" />
+                </div>
+            </div>
+            }
+
+    else if(@ViewBag.Remaining_amount != 0)
+    {
+                <div class="col-md-10 hidden">
+                    <input type="text" name="amount" value="@ViewBag.Remaining_Amount">
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <input type="submit" value="Cast Remaining Vote" class="btn btn-default" style="display:block; margin-top:20px;" />
+                </div>
+
+    }
+            else
+            {
+        
+            <h2>Thank you for participating in this year's Symposium. You have no more vote dollars remaining.</h2>
+            }
+    }
+
+
+        @if (ViewBag.Symposium.vote_style != "amount")
+        {
+         <div class="message">
+            @ViewBag.Message
+
+        </div>
+            <div class="form-group">
+                <div class=" col-md-10">
+                    <input type="submit" value="Cast Vote" class="btn btn-default" style="display:block; margin-top:20px;" />
+                </div>
+            </div>
+
+        }
+    </div>
+}
+    
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+    <script>
+        $(function () {
+            $("#slider-range-max").slider({
+                range: "max",
+                min: 1,
+                max: 10,
+                value: 2,
+                slide: function (event, ui) {
+                    $("#amount").val(ui.value);
+                }
+            });
+            $("#amount").val($("#slider-range-max").slider("value"));
+        });
+    </script>

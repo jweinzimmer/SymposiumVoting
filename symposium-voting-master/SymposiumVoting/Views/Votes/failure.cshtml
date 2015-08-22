@@ -1,0 +1,47 @@
+﻿@if (ViewBag.Symposium.vote_style == "amount")
+{
+    if(ViewBag.Not_registered){
+        <h2> This Voter ID does not exist under this symposium.</h2>
+    }
+    else if (ViewBag.Already_voted)
+    
+    {
+        <h2>You have already voted for this project</h2>
+    }
+
+    else if (ViewBag.Voter_amount == ViewBag.Symposium.limit)
+    {
+        <h2> You have used all of your vote dollars.</h2>
+    }
+    else if (ViewBag.under_min)
+    {
+        <h2> You have went under your minimum votes allowed for this project.</h2>
+    }
+    else if (ViewBag.over_max)
+    {
+        <h2> You have went over your maximum votes allowed for this project.</h2>
+    }
+        else
+        {
+            <h2> You went over your vote currency amount. You can only contribute @ViewBag.AmountRemaining currency left.</h2>
+        }
+}
+else
+{
+    if(ViewBag.Not_registered){
+        <h2> This Voter ID does not exist under this symposium.</h2>
+    }
+    else if (ViewBag.Already_voted)
+    {
+        <h2>You Have Already voted for this project</h2>
+    }
+    else if (ViewBag.over_range)
+    {
+        <h2>You have entered a number over 10 please choose a number smaller</h2>
+    }
+    else { 
+    <h2>You Have no more votes remaining, Thank you for voting!</h2>
+}
+}
+@Html.ActionLink("Back to Symposium", "Details", "Symposiums", new { id = Model.symposiumID }, new { })
+

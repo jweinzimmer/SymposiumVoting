@@ -1,0 +1,67 @@
+﻿<script src="~/Content/Chart.js"></script>
+@model SymposiumVoting.Models.Symposium
+@{
+    ViewBag.Title = "reports";
+}
+
+<h2>Reports</h2>
+<input type="text" class="hidden" id="symposium_id" value="@Model.ID" />
+<div style="text-align:center; margin-bottom: 50px;">
+    @*@Html.ActionLink("Render Pie", "render_pie", "Reports", new { @class = "btn", id = "mypieChart" })
+    @Html.ActionLink("Register Bar", "Create", "Reports", new { @class = "btn", id = "mybarChart" })*@
+    @*@Html.ActionLink("Render Line", "Create", "Reports", new { @class = "btn", id = "mylineChart" })*@
+    @*@Html.ActionLink("Render Polar", "Create", "Reports", new { @class = "btn", id = "mypolarChart" })*@
+</div>
+<div id="content">
+</div>
+<script>
+    var id = $("#symposium_id").val();
+    $("#mypolarChart").click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: "StarVote/Reports/render_polar",
+            data: { symposium_id: id },
+            datatype: "html",
+            success: function (data) {
+                $('#content').html(data);
+            }
+        });
+    });
+    $("#mypieChart").click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: "/Reports/render_pie",
+            data: { symposium_id: id },
+            datatype: "html",
+            success: function (data) {
+                $('#content').html(data);
+            }
+        });
+    });
+    //$("#mylineChart").click(function (e) {
+    //    e.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: "/StarVote/Reports/render_line",
+            data: { symposium_id: id },
+            datatype: "html",
+            success: function (data) {
+                $('#content').html(data);
+            }
+        });
+    //});
+    $("#mybarChart").click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: "/Reports/render_bar",
+            data: { symposium_id: id },
+            datatype: "html",
+            success: function (data) {
+                $('#content').html(data);
+            }
+        });
+    });
+</script>

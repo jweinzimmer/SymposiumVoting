@@ -1,0 +1,64 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+@if (ViewBag.Course_Count != 0)
+{
+    <p style="font-weight:bold;" id="course_wrapper">
+
+        Filter By Course:
+        <select id="scope_course_project">
+
+            @foreach (var item in ViewBag.Courses)
+            {
+                
+                <option value=@item.courseNumber>@item.courseName</option>
+
+            }
+        </select>
+    </p>
+    }
+    
+    else
+{
+    <p style="font-weight:bold;" id="course_wrapper">
+
+        This Symposium has no projects belonging to courses.
+        
+        </p>
+}
+</body>
+</html>
+<script>
+    var ec = $('#scope_project_with_course');
+    var c = $('#scope_course_project').val();
+
+    
+    if (ec.val() == null && $('#filter_symposium').is(':checked'))
+        {
+        $('#course_wrapper').addClass('hidden');
+    }
+    $("#scope_course_project").prop("selectedIndex", -1);
+    $("#scope_course_project").change(function () {
+        c = $('#scope_course_project').val();
+        $('#export').attr('href', "http://crux2.unfcsd.unf.edu/StarVote/Projects/ExportPlanToWord/" + ec.val() + "?course_id=" + c);
+        $('#scoped').empty();
+        $.get('http://crux2.unfcsd.unf.edu/StarVote/Projects/scoped_projects/' + ec.val() + '?course_id=' + c, function (data) {
+            $('#scoped').html(data);
+        });
+        $('#export').html('Export projects for ' + $('#scope_project_with_course option:selected').text() + " - " + $('#scope_course_project option:selected').text());
+        $('#semester').html('Create project for ' + $('#scope_project_with_course option:selected').text() + " - " + $('#scope_course_project option:selected').text());
+        $('#export').attr('href', "http://crux2.unfcsd.unf.edu/StarVote/Projects/ExportPlanToWord/" + ec.val() + '?course_id=' + c);
+        $('#semester').attr('href', "/Projects/Create/" + ec.val() + '?course_id=' + c);
+        $('#export').removeClass('hidden');
+    });
+
+</script>

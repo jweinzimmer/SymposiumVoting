@@ -1,0 +1,20 @@
+@import 'variables';
+.btn
+{
+	background-color: gray;
+	color: white;
+	&:hover{
+		background-color: $unf-blue;
+		color: white;
+	}
+	
+}
+
+dl.inline{ 
+	dt{
+		float: left;
+		margin-right: 30px;
+		text-align: right;
+		width: 100px;
+	}
+}

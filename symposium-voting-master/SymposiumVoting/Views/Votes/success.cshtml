@@ -1,0 +1,36 @@
+﻿@model SymposiumVoting.Models.Voter
+
+@{
+    ViewBag.Title = "success";
+}
+
+@{int votes_left = ViewBag.Symposium.limit - @Model.Votes.Count;
+  int vote_dollars_remaining = ViewBag.Symposium.limit - ViewBag.amount_remaining;
+
+<div>
+    <div>
+        
+  
+        <div>
+            <img style="width:50px; height:50px; margin-right:10px; display: inline-block;" src="http://www.clipartbest.com/cliparts/jRT/A7R/jRTA7RyiL.jpeg" />
+            <h3 style="display:inline-block; margin-bottom:25px;"> Vote Added!</h3>
+            @if (ViewBag.Symposium.vote_style == "amount")
+            {
+                if (ViewBag.amount_remaining < ViewBag.Symposium.limit)
+                {
+                    <p>You’ve just cast your vote for this project and have @vote_dollars_remaining votes dollars remaining. </p>
+                }
+                else
+                {
+                    <h2>Thank you for participating in voting, you have no more vote dollars left.</h2>
+                }
+            }
+            else
+            {
+                <p>You’ve just cast your vote for this project and have @votes_left votes remaining.</p>
+            }
+        </div>
+    </div>
+</div>
+}
+@*@Html.ActionLink("Back to Symposium", "Details", "Symposiums", new { id = Model.symposiumID }, new { })*@

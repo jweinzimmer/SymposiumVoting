@@ -1,0 +1,82 @@
+﻿@model SymposiumVoting.Models.Project
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@if (@ViewBag.Symposium != null) { 
+    <h2>Add Project to @ViewBag.Symposium.semester @ViewBag.Symposium.year Symposium</h2>
+}
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CourseNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CourseNumber)
+                @Html.ValidationMessageFor(model => model.CourseNumber)
+            </div>
+        </div>
+        <div class="form-group hidden">
+            @Html.EditorFor(model => model.symposiumID, new { @class = "control-label col-md-2" })
+
+        </div>
+        <div class="form-group">
+            <h2 class="control-label col-md-2">Students</h2>
+            <div class="input_fields_wrap col-md-10">
+                <button class="add_field_button">Add More Students</button>
+                <div><input type="text" name="mytext[]"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Symposium", "Details", "Symposiums", new { id = Model.symposiumID }, new { })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var max_fields = 6; //maximum input boxes allowed
+        var wrapper = $(".input_fields_wrap"); //Fields wrapper
+        var add_button = $(".add_field_button"); //Add button ID
+
+        var x = 1; //initlal text box count
+        $(add_button).click(function (e) { //on add input button click
+            e.preventDefault();
+            if (x < max_fields) { //max input box allowed
+                x++; //text box increment
+                $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); //add input box
+            }
+        });
+
+        $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
+            e.preventDefault(); $(this).parent('div').remove(); x--;
+        })
+    });</script>

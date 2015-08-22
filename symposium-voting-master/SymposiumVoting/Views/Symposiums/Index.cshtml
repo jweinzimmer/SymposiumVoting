@@ -1,0 +1,40 @@
+﻿@using System.Linq
+@model IEnumerable<SymposiumVoting.Models.Symposium>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+@if (!Model.Any())
+{
+    <h1>No Symposiums exist.</h1>
+}
+else
+{
+ <div class="sub-nav-bar">
+     <h2 class="col-sm-8" id="h2_nav">
+
+     Select A Symposium
+     </h2>
+   
+ </div>
+<table class="table">
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.semester + " - " + item.year, "Details", new { id = item.ID })
+        </td>
+ 
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
+
+}
+    @Html.ActionLink("New Symposium", "Create", "Symposiums", new { @class = "btn" })

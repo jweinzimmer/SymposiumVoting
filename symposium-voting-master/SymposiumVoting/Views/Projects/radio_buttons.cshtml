@@ -1,0 +1,99 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<body>
+    <div>
+        <table>
+
+            <tr>
+                <td><input type="radio" name="opt" checked="checked" id="filter_symposium"></td>
+                <td>Filter By Symposium</td>
+            </tr>
+
+            <tr>
+                <td><input type="radio" name="opt" id="filter_course"></td>
+                <td>Filter By Course</td>
+            </tr>
+
+            <tr>
+                <td><input type="radio" name="opt" id="filter_both"></td>
+                <td>Filter By Both</td>
+            </tr>
+            
+        </table>
+    </div>
+
+</body>
+</html>
+<script>
+    var e = $('#scope_project');
+    var id = e.val();
+    
+    $('#filter_course').click(function () {
+        id = null;
+
+        $('#scope_project').val('');
+        $('.select_projects_with_couse').removeClass('hidden');
+        $("#scope_project").val('');
+        $('#course_wrapper').removeClass('hidden');
+        $("#scope_project").val('');
+        $('#scoped').empty();
+        $('.select_projects').addClass('hidden');
+
+
+        $('#semester').addClass('hidden');
+        $('#export').addClass('hidden');
+        $('.select_projects_with_course').addClass('hidden');
+        $('#scope_course_project').prop("selectedIndex", -1);
+        $.ajax({
+            type: "GET",
+            url: "StarVote/Projects/dropdown_for_courses",
+            data: { symposium_id: id },
+            datatype: "html",
+            success: function (data) {
+                $('#scoped_courses').html(data);
+            }
+        });
+       $('#course_wrapper').removeClass('hidden');
+
+    })
+    $('#filter_both').click(function () {
+        $('.select_projects_with_couse').removeClass('hidden');
+        $('.select_projects').addClass('hidden');
+        $('#course_wrapper').removeClass('hidden');
+        $('.select_projects').addClass('hidden');
+        $('.select_projects_with_course').removeClass('hidden');
+        $('.select_projects_with_course').css('vertical-align', 'top');
+        $('.select_projects_with_course').css('margin-right', '20px');
+        $('.select_projects_with_course').css('display', 'inline-block');
+        $('#scope_course_project').prop("selectedIndex", -1);
+        $('#scope_project_with_course').prop("selectedIndex", -1);
+        $('#scoped').empty();
+        
+    })
+    $('#filter_symposium').click(function () {
+        $('#scoped').empty();
+        $("#scope_course_project").val('');
+
+        $('#course_wrapper').addClass('hidden');
+        $('.select_projects').removeClass('hidden');
+        $('.select_projects_with_course').addClass('hidden');
+
+
+
+    })
+    if (e.val() == null) {
+        $('#options').addClass('hidden');
+    }
+    else {
+
+    }
+
+
+
+    </script>

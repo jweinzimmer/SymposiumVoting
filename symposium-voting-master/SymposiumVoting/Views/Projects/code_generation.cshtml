@@ -1,0 +1,16 @@
+﻿@model SymposiumVoting.Models.Project
+
+@{
+    ViewBag.Title = "QR Code Generation";
+}
+@{int id = Model.ID;}
+<div class="qr_code">
+    <h2>@Model.Name</h2>
+    <div>
+        <img src="http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl=http%3A//unfsymposiumvoting.azurewebsites.net//Vote/@(Model.ID)&chld=H|0" />
+    </div>
+    <p>
+        @Html.ActionLink("Back to Symposium", "Details", "Symposiums", new { id = Model.symposiumID }, new { })
+    </p>
+</div>
+</div>

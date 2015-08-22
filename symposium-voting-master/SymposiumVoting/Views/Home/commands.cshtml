@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "commands";
+}
+
+<h2>Commands To Run Migration</h2>
+<div>
+
+    <p>Enable-Migrations -ContextTypeName SymposiumVoting.Models.mainDBContext</p>
+
+    <p>Add-Migration -ConfigurationTypeName SymposiumVoting.Migrations.mainDbContext.Configuration "Name Your File"</p>
+
+    <p>Update-Database -ConfigurationTypeName SymposiumVoting.Migrations.mainDbContext.Configuration</p>
+</div>
+

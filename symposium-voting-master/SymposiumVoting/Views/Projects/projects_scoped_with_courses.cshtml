@@ -1,0 +1,123 @@
+﻿
+@model SymposiumVoting.Models.Symposium
+
+@{
+  
+    ViewBag.Title = "projects scoped with courses";
+    int a = 1;
+}
+
+<host factorytype="System.Web.Mvc.MvcWebRazorHostFactory, System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31BF3856AD364E35" />
+<pages pagebasetype="System.Web.Mvc.WebViewPage">
+    <namespaces>
+        <add namespace="System.Web.Mvc" />
+        <add namespace="System.Web.Mvc.Ajax" />
+        <add namespace="System.Web.Mvc.Html" />
+        <add namespace="System.Web.Routing" />
+        <add namespace="System.Data.Linq" />
+    </namespaces>
+</pages>
+<h2>Projects Scoped With Courses</h2>
+    <table class="table">
+        @if (Model.Projects.Count != 0)
+        {
+            <tr>
+                <th>
+                    Name
+                </th>
+                @if (Model.vote_style == "amount")
+                {
+                    <th>
+                        Vote Dollars
+                    </th>
+                    <th>
+
+                    </th>
+
+                }
+                else if (Model.vote_style == "range")
+                {
+                    <th>
+                        Vote Amount
+                    </th>
+                    <th>
+
+                    </th>
+
+                }
+                else
+                {
+                    <th>
+                        Votes
+                    </th>
+                    <th>
+
+                    </th>
+                }
+            </tr>
+
+
+
+
+            foreach (var item in ViewBag.Courses)
+            {
+               
+
+                    <td style="background-color:#f9f9f9">@item.courseName</td>
+                <td style="background-color:#f9f9f9"></td>
+                <td style="background-color:#f9f9f9"></td>
+
+                foreach (var project in item.GetProjects())
+                {
+
+                    <tr>
+                        <td>
+                            @Html.ActionLink((string)project.Name, "Details", "Projects", new { id = project.ID }, new { })
+                        </td>
+                        @if (Model.vote_style == "amount")
+                        {
+                            int project_vote_amount = 0;
+                            foreach (var vote in project.Votes)
+                            {
+                                project_vote_amount = project_vote_amount + vote.amount;
+                            }
+                            <td>
+                                @project.total_votes
+                            </td>
+                        }
+                        else if (Model.vote_style == "range")
+                        {
+                            int vote_count = 0;
+                            foreach (var vote in project.Votes)
+                            {
+                                vote_count = vote_count + vote.amount;
+                            }
+
+                            <td>
+                                @vote_count
+                            </td>
+
+                        }
+                        else
+                        {
+
+                            int vote_count = 0;
+                            vote_count = vote_count + project.Votes.Count;
+                            <td>
+                                @vote_count
+                            </td>
+                        }
+
+                        <td></td>
+                    </tr>
+                }
+
+            }
+
+
+        }
+    </table>
+
+
+
+
